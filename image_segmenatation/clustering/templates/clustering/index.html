@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Segmentation Comparison</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2, h4 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        form button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        .image-block {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .image-block div {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-block img {
+            border: 1px solid #ccc;
+            max-width: 300px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        hr {
+            margin-top: 40px;
+            border: none;
+            border-top: 2px solid #ccc;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload an Image</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Segment</button>
+    </form>
+
+    {% if result_image %}
+    <hr>
+    <div class="image-block">
+        {% if original_image %}
+        <div>
+            <h4>Original Image</h4>
+            <img src="/media/{{ original_image }}" alt="Original Image">
+        </div>
+        {% endif %}
+
+        {% if ground_truth_image %}
+        <div>
+            <h4>Ground Truth Segmentation</h4>
+            <img src="/media/{{ ground_truth_image }}" alt="Ground Truth">
+        </div>
+        {% endif %}
+
+        <div>
+            <h4>KMeans Segmentation</h4>
+            <img src="/media/{{ result_image }}" alt="KMeans Result">
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>
